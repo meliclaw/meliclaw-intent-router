@@ -38,6 +38,14 @@ deny = []
 [advisories]
 version = 2
 yanked = "warn"
+ignore = [
+    # Transitive through tokenizers 0.21.4. No safe upstream replacement is
+    # available in this workspace yet; review when tokenizers updates.
+    "RUSTSEC-2024-0436",
+    # Transitive through indicatif -> tokenizers. No safe upstream replacement
+    # is available in this workspace yet; review when tokenizers updates.
+    "RUSTSEC-2025-0119",
+]
 
 [sources]
 unknown-registry = "deny"
