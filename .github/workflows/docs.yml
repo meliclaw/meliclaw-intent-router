@@ -1,11 +1,12 @@
 name: Release Docs
 
 on:
-  workflow_call:
-    secrets:
-      PAT:
-        required: true
-        description: "Personal Access Token with access to the docs repository"
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "semantic_router/**"
+  workflow_dispatch:
 
 jobs:
   build-docs:
@@ -27,7 +28,7 @@ jobs:
         cache-dependency-glob: "uv.lock"
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
-      run: uv sync --extra docs
+      run: uv sync --group docs
     - name: Build docs
       run: |
         mkdir -p docs/build
