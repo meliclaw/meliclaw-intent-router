@@ -13,7 +13,7 @@
 
 | Check | Estado |
 |---|---|
-| Fork privado | **P0 abierto:** `github.com/meliclaw/semantic-router` está público. Convertir a privado. |
+| Fork privado | **P0 abierto:** `github.com/meliclaw/meliclaw-intent-router` está público. Convertir a privado. |
 | `LICENSE` preservado | Sí — MIT, Copyright 2024 Aurelio AI, sin modificar |
 | `NOTICE` upstream | Ninguno |
 | Remote `upstream` | `https://github.com/aurelio-labs/semantic-router.git` |
