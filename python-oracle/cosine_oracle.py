@@ -6,6 +6,7 @@
 Prints JSON used by crates/meliclaw-intent-router tests (values are also
 hard-coded so CI does not need Python).
 """
+
 from __future__ import annotations
 
 import json
@@ -15,7 +16,7 @@ try:
     import numpy as np
     from numpy.linalg import norm
 except ImportError:
-    print("numpy required", file=sys.stderr)
+    sys.stderr.write("numpy required\n")
     sys.exit(2)
 
 
@@ -29,7 +30,7 @@ def main() -> None:
     index = np.array([[1.0, 0.0], [0.0, 1.0], [1.0, 1.0]], dtype=np.float32)
     xq = np.array([1.0, 0.0], dtype=np.float32)
     sim = similarity_matrix(xq, index)
-    print(json.dumps({"sim": [float(x) for x in sim]}, indent=2))
+    sys.stdout.write(f"{json.dumps({'sim': [float(x) for x in sim]}, indent=2)}\n")
 
 
 if __name__ == "__main__":

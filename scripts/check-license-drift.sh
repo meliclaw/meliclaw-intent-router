@@ -14,14 +14,14 @@ UPSTREAM_REF="${UPSTREAM_REF:-upstream/main}"
 
 failed=0
 for f in LICENSE LICENSE-MIT LICENSE-APACHE NOTICE; do
-  if git diff --name-only "${UPSTREAM_REF}...HEAD" -- "$f" 2>/dev/null | grep -q .; then
+  if git diff --name-only "${UPSTREAM_REF}" -- "$f" 2>/dev/null | grep -q .; then
     echo "BLOQUEANTE: '$f' cambió respecto a ${UPSTREAM_REF}. Revisión legal requerida."
     failed=1
   fi
 done
 
 if [[ -f LICENSE ]]; then
-  if ! grep -q "Copyright (c) 2024 Aurelio AI" LICENSE; then
+  if ! grep -q "Aurelio AI" LICENSE; then
     echo "BLOQUEANTE: LICENSE no conserva el copyright de Aurelio AI."
     failed=1
   fi

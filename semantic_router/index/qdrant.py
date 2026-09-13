@@ -211,13 +211,13 @@ class QdrantIndex(BaseIndex):
 
         return models.Filter(must=[ns_condition, base_filter])
 
-    def _point_ids_for_utterances(self, routes_to_delete: dict) -> list[str | int]:
+    def _point_ids_for_utterances(self, routes_to_delete: dict) -> list:
         """Compute deterministic point IDs for the given route→utterance mapping.
 
         Uses the same uuid5 scheme as ``add()`` so IDs are derived without
         a round-trip to Qdrant.
         """
-        ids: list[str | int] = []
+        ids: list = []
         for route, utterances in routes_to_delete.items():
             for utterance in utterances:
                 key = (
@@ -629,13 +629,18 @@ class QdrantIndex(BaseIndex):
         from qdrant_client import models
 
         if not self.client.collection_exists("sr_config"):
-            # Use 1-dim vector for config points
-            self.client.create_collection(
-                collection_name="sr_config",
-                vectors_config=models.VectorParams(
-                    size=1, distance=self.convert_metric(self.metric)
-                ),
-            )
+            try:
+                # Use 1-dim vector for config points
+                self.client.create_collection(
+                    collection_name="sr_config",
+                    vectors_config=models.VectorParams(
+                        size=1, distance=self.convert_metric(self.metric)
+                    ),
+                )
+            except Exception:
+                # Another process created it between the check and the create
+                if not self.client.collection_exists("sr_config"):
+                    raise
 
     def _config_point_id(self, field: str, scope: str | None = None) -> str:
         """Generate a deterministic UUID string for config/hash/lock points."""
@@ -746,11 +751,9 @@ class QdrantIndex(BaseIndex):
         :return: The total number of vectors.
         :rtype: int
         """
-        try:
-            return self.client.get_collection(self.index_name).points_count
-        except ValueError as e:
-            logger.warning(f"No collection found, {e}")
+        if not self.client.collection_exists(self.index_name):
             return 0
+        return self.client.get_collection(self.index_name).points_count or 0
 
     async def adelete(self, route_name: str) -> list[str]:
         """Asynchronously delete records from the index by route name.

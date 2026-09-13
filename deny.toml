@@ -11,26 +11,6 @@ no-default-features = false
 
 [licenses]
 version = 2
-deny = [
-    "AGPL-3.0",
-    "AGPL-3.0-only",
-    "AGPL-3.0-or-later",
-    "GPL-2.0",
-    "GPL-2.0-only",
-    "GPL-2.0-or-later",
-    "GPL-3.0",
-    "GPL-3.0-only",
-    "GPL-3.0-or-later",
-    "LGPL-2.1",
-    "LGPL-2.1-only",
-    "LGPL-2.1-or-later",
-    "LGPL-3.0",
-    "LGPL-3.0-only",
-    "LGPL-3.0-or-later",
-    "SSPL-1.0",
-    "BUSL-1.1",
-    "Elastic-2.0",
-]
 allow = [
     "MIT",
     "Apache-2.0",
@@ -58,6 +38,14 @@ deny = []
 [advisories]
 version = 2
 yanked = "warn"
+ignore = [
+    # Transitive through tokenizers 0.21.4. No safe upstream replacement is
+    # available in this workspace yet; review when tokenizers updates.
+    "RUSTSEC-2024-0436",
+    # Transitive through indicatif -> tokenizers. No safe upstream replacement
+    # is available in this workspace yet; review when tokenizers updates.
+    "RUSTSEC-2025-0119",
+]
 
 [sources]
 unknown-registry = "deny"
