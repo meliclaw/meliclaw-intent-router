@@ -6,6 +6,7 @@
 Prints JSON used by crates/meliclaw-intent-router tests (values are also
 hard-coded so CI does not need Python).
 """
+
 from __future__ import annotations
 
 import json
